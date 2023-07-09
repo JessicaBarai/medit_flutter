@@ -27,7 +27,7 @@ class _SplashState extends State<Splash> {
     return Scaffold(
       body: Center(
         child: Container(
-          child: Text("Spalsh screen", 
+          child: Text("IGlaucoma", 
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold
