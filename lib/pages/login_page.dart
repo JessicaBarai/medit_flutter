@@ -1,28 +1,77 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_app/components/my_button.dart';
 import 'package:my_app/components/my_textfield.dart';
 import 'package:my_app/components/square_title.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   LoginPage({super.key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   // text editing controllers
-  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
+
   final passwordController = TextEditingController();
 
   // sign user in method
-  void signUserIn() {}
+  void signUserIn() async {
 
+    showDialog(context: context, builder: (context){
+      return const Center(child: CircularProgressIndicator(),
+
+      );
+    },
+    
+    );
+    try{
+      await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text, password: passwordController.text);
+        Navigator.pop(context);
+    }on FirebaseAuthException catch (e){
+         Navigator.pop(context);
+      if (e.code == 'user-not-found'){
+        wrongEmailMessage();
+        //print('No user found for email');
+      }else if(e.code == 'wrong-password'){
+        //print('wrong password');
+        wrongPasswordMessage();
+
+      }
+    }
+    
+
+ 
+  }
+
+  void wrongEmailMessage(){
+    showDialog(context: context, builder: (context){
+     return const AlertDialog(
+        title: Text('Incorrect Email'),
+      );
+    });
+  }
+
+   void wrongPasswordMessage(){
+    showDialog(context: context, builder: (context){
+     return const AlertDialog(
+        title: Text('Incorrect password'),
+      );
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset : false,
       backgroundColor: Colors.grey[300],
       body: SafeArea(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 50),
+              const SizedBox(height: 30),
 
               // logo
               const Icon(
@@ -30,7 +79,7 @@ class LoginPage extends StatelessWidget {
                 size: 100,
               ),
 
-              const SizedBox(height: 50),
+              const SizedBox(height: 30),
 
               // welcome back, you've been missed!
               Text(
@@ -43,10 +92,10 @@ class LoginPage extends StatelessWidget {
 
               const SizedBox(height: 25),
 
-              // username textfield
+              // email textfield
               MyTextField(
-                controller: usernameController,
-                hintText: 'Username',
+                controller: emailController,
+                hintText: 'Email',
                 obscureText: false,
               ),
 
@@ -82,7 +131,7 @@ class LoginPage extends StatelessWidget {
                 onTap: signUserIn,
               ),
 
-              const SizedBox(height: 50),
+              const SizedBox(height: 30),
 
               // or continue with
               Padding(
@@ -112,20 +161,20 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 50),
+              const SizedBox(height: 30),
 
               // google + apple sign in buttons
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   // google button
                   SquareTile(imagePath: 'lib/images/BankID_logo_neg.png'),
 
-                  SizedBox(width: 25),
+                  SizedBox(width: 15),
                 ],
               ),
 
-              const SizedBox(height: 50),
+              const SizedBox(height: 30),
 
               // not a member? register now
               Row(
