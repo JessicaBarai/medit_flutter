@@ -28,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
     
     );
     try{
-      await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text, password: passwordController.text);
+      await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text.replaceAll(' ', ''), password: passwordController.text);
         Navigator.pop(context);
     }on FirebaseAuthException catch (e){
          Navigator.pop(context);
@@ -67,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
       resizeToAvoidBottomInset : false,
       backgroundColor: Colors.grey[300],
       body: SafeArea(
-        child: Center(
+       child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
