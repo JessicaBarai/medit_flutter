@@ -13,8 +13,21 @@ void signUserOut(){
 @override
 Widget build(BuildContext context){
   return Scaffold(
+    resizeToAvoidBottomInset : false,
     appBar: AppBar(actions:[IconButton(onPressed: signUserOut, icon: Icon(Icons.logout))] ),
-    body: Center(child: Text("LOGGED IN AS: " + user.email!)),
+    body: SafeArea(child: Column(children: [
+      Row(children: [Image.asset(
+        'lib/images/menu.png',
+        height: 45,
+        color: Colors.grey[800],
+      ),
+        
+
+        
+      ],)
+    ],)
+    
+    ),
   );
 
 }
